@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evangelho Sagrado Sem Joio</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f0e6;
+  color: #29251e;
+  text-align: center;
+}
+header {
+  background: #49351f;
+  color: white;
+  padding: 25px 10px;
+}
+h1 { font-size: 25px; }
+main { padding: 20px; }
+button {
+  background: #49351f;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  margin: 8px;
+}
+iframe {
+  width: 100%;
+  height: 65vh;
+  border: none;
+  background: white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Evangelho Sagrado Sem Joio</h1>
+<p>Leitura livre para todos</p>
+</header>
+
+<main>
+<h2>Bem-vindo!</h2>
+<p>Leia e compartilhe este livro gratuitamente.</p>
+
+<button onclick="window.open('evangelho_sagrado.pdf','_blank')">
+LER O LIVRO
+</button>
+
+<button onclick="navigator.share({
+title:'Evangelho Sagrado Sem Joio',
+url:window.location.href
+})">
+COMPARTILHAR
+</button>
+
+<iframe src="evangelho_sagrado.pdf"></iframe>
+</main>
+
+</body>
+</html>
