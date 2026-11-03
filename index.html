@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -15,10 +16,16 @@ body {
 }
 header {
   background: #49351f;
-  color: white;
-  padding: 25px 10px;
+  padding: 20px 10px;
 }
-h1 { font-size: 25px; }
+.capa {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+}
 main { padding: 20px; }
 button {
   background: #49351f;
@@ -39,15 +46,11 @@ iframe {
 </head>
 
 <body>
-  <div style="text-align:center; padding:20px;">
-  <img src="capa_evangelho_sagrado-1.jpg"
-       alt="capa do Evangelho Sagrado Sem Joio"
-       style="width:75%; max-width:280px; height:auto; display:block; margin:auto; border-radius:8px;">
-</div>
 
 <header>
-<h1>Evangelho Sagrado Sem Joio</h1>
-<p>Leitura livre para todos</p>
+  <img class="capa"
+       src="capa_evangelho_sagrado-1.jpg"
+       alt="Evangelho Sagrado Sem Joio - Novo Testamento">
 </header>
 
 <main>
@@ -58,10 +61,7 @@ iframe {
 LER O LIVRO
 </button>
 
-<button onclick="navigator.share({
-title:'Evangelho Sagrado Sem Joio',
-url:window.location.href
-})">
+<button onclick="navigator.share({title:'Evangelho Sagrado Sem Joio',url:window.location.href})">
 COMPARTILHAR
 </button>
 
@@ -70,3 +70,33 @@ COMPARTILHAR
 
 </body>
 </html>
+
+  
+  
+       
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
