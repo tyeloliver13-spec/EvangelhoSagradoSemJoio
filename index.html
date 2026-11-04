@@ -1,9 +1,11 @@
 
+  
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Evangelho Sagrado Sem Joio</title>
 
 <style>
@@ -14,10 +16,12 @@ body {
   color: #29251e;
   text-align: center;
 }
+
 header {
   background: #49351f;
   padding: 20px 10px;
 }
+
 .capa {
   width: 100%;
   max-width: 380px;
@@ -26,7 +30,11 @@ header {
   display: block;
   margin: auto;
 }
-main { padding: 20px; }
+
+main {
+  padding: 20px;
+}
+
 button {
   background: #49351f;
   color: white;
@@ -35,7 +43,44 @@ button {
   border-radius: 8px;
   font-size: 16px;
   margin: 8px;
+  cursor: pointer;
 }
+
+.pesquisa {
+  margin: 30px auto;
+  max-width: 500px;
+}
+
+.pesquisa input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #49351f;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+#resultados {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.resultado {
+  background: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+.resultado button {
+  margin-left: 0;
+}
+
+#status {
+  font-size: 14px;
+  margin: 15px;
+}
+
 iframe {
   width: 100%;
   height: 65vh;
@@ -54,22 +99,197 @@ iframe {
 </header>
 
 <main>
+
 <h2>Bem-vindo!</h2>
+
 <p>Leia e compartilhe este livro gratuitamente.</p>
 
 <button onclick="window.open('evangelho_sagrado.pdf','_blank')">
 LER O LIVRO
 </button>
 
-<button onclick="navigator.share({title:'Evangelho Sagrado Sem Joio',url:window.location.href})">
+<button onclick="compartilhar()">
 COMPARTILHAR
 </button>
 
-<iframe src="evangelho_sagrado.pdf"></iframe>
+<section class="pesquisa">
+
+<h2>Pesquisar no Evangelho</h2>
+
+<p>
+Pesquise por livro, capítulo, versículo ou palavra.
+</p>
+
+<input
+  type="search"
+  id="busca"
+  placeholder="Ex.: João 3:16 ou Mateus 5"
+>
+
+<button onclick="pesquisar()">
+PESQUISAR
+</button>
+
+<p id="status"></p>
+
+<div id="resultados"></div>
+
+</section>
+
+<iframe
+  src="evangelho_sagrado.pdf"
+  title="Leitura do Evangelho">
+</iframe>
+
 </main>
+
+<script>
+async function compartilhar() {
+  const dados = {
+    title: 'Evangelho Sagrado Sem Joio',
+    text: 'Leia e compartilhe este livro gratuitamente.',
+    url: window.location.href
+  };
+
+  if (navigator.share) {
+    try {
+      await navigator.share(dados);
+    } catch (erro) {
+      console.log('Compartilhamento cancelado.');
+    }
+  } else {
+    await navigator.clipboard.writeText(window.location.href);
+    alert('Endereço do aplicativo copiado!');
+  }
+}
+</script>
+
+<script type="module">
+
+import * as pdfjsLib from
+'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs';
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs';
+
+const PDF_URL = 'evangelho_sagrado.pdf';
+
+let documentoPDF = null;
+
+function normalizar(texto) {
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+}
+
+async function carregarPDF() {
+  if (!documentoPDF) {
+    documentoPDF = await pdfjsLib
+      .getDocument(PDF_URL).promise;
+  }
+
+  return documentoPDF;
+}
+
+window.pesquisar = async function() {
+
+  const campo = document.getElementById('busca');
+  const resultados = document.getElementById('resultados');
+  const status = document.getElementById('status');
+
+  const termo = normalizar(campo.value);
+
+  resultados.innerHTML = '';
+
+  if (!termo) {
+    status.textContent = 'Digite o livro, capítulo ou versículo.';
+    return;
+  }
+
+  status.textContent = 'Carregando o Evangelho e pesquisando...';
+
+  try {
+
+    const pdf = await carregarPDF();
+
+    let encontrados = 0;
+    const limite = 30;
+
+    for (let numero = 1;
+         numero <= pdf.numPages;
+         numero++) {
+
+      const pagina = await pdf.getPage(numero);
+      const conteudo = await pagina.getTextContent();
+
+      const texto = conteudo.items
+        .map(item => item.str || '')
+        .join(' ');
+
+      if (normalizar(texto).includes(termo)) {
+
+        encontrados++;
+
+        const bloco = document.createElement('div');
+        bloco.className = 'resultado';
+
+        const titulo = document.createElement('strong');
+        titulo.textContent = 'Resultado encontrado - Página ' + numero;
+
+        const botao = document.createElement('button');
+        botao.textContent = 'ABRIR ESTA PÁGINA';
+
+        botao.onclick = function() {
+          window.open(
+            PDF_URL + '#page=' + numero,
+            '_blank'
+          );
+        };
+
+        bloco.appendChild(titulo);
+        bloco.appendChild(document.createElement('br'));
+        bloco.appendChild(botao);
+
+        resultados.appendChild(bloco);
+
+        if (encontrados >= limite) {
+          break;
+        }
+      }
+    }
+
+    if (encontrados === 0) {
+      status.textContent =
+        'Nenhum resultado encontrado. Confira a escrita ou tente outra pesquisa.';
+    } else {
+      status.textContent =
+        encontrados + ' resultado(s) encontrado(s).';
+    }
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    status.textContent =
+      'Não foi possível pesquisar o PDF. Verifique se o arquivo está disponível e se possui texto selecionável.';
+  }
+
+};
+
+document.getElementById('busca')
+  .addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      window.pesquisar();
+    }
+  });
+
+</script>
 
 </body>
 </html>
+
 
   
   
