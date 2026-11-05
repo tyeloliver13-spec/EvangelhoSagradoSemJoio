@@ -28,13 +28,8 @@ header h1 {
   font-size: 23px;
 }
 
-main {
-  padding: 15px;
-}
-
-#inicio {
-  padding: 12px;
-}
+main { padding: 15px; }
+#inicio { padding: 12px; }
 
 .capa {
   width: 75%;
@@ -57,9 +52,7 @@ button {
   cursor: pointer;
 }
 
-button:disabled {
-  opacity: .5;
-}
+button:disabled { opacity: .5; }
 
 #leitor {
   display: none;
@@ -162,9 +155,7 @@ button:disabled {
 
   <div id="status"></div>
   <div id="resultados"></div>
-
   <div id="trechoEncontrado"></div>
-
   <div id="informacao"></div>
 
   <div id="areaLeitura">
@@ -179,7 +170,6 @@ button:disabled {
   <div id="numeroPagina"></div>
 
 </section>
-
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -194,23 +184,33 @@ let totalPaginas = 0;
 let textosPaginas = {};
 let carregando = false;
 
+/* LISTA DE LIVROS: JOÃO ATÉ APOCALIPSE */
+
 const livros = [
-  "Gênesis","Êxodo","Levítico","Números","Deuteronômio",
-  "Josué","Juízes","Rute","1 Samuel","2 Samuel",
-  "1 Reis","2 Reis","1 Crônicas","2 Crônicas",
-  "Esdras","Neemias","Ester","Jó","Salmos",
-  "Provérbios","Eclesiastes","Cantares","Isaías",
-  "Jeremias","Lamentações","Ezequiel","Daniel",
-  "Oséias","Joel","Amós","Obadias","Jonas",
-  "Miquéias","Naum","Habacuque","Sofonias",
-  "Ageu","Zacarias","Malaquias","Mateus","Marcos",
-  "Lucas","João","Atos","Romanos","1 Coríntios",
-  "2 Coríntios","Gálatas","Efésios","Filipenses",
-  "Colossenses","1 Tessalonicenses",
-  "2 Tessalonicenses","1 Timóteo","2 Timóteo",
-  "Tito","Filemom","Hebreus","Tiago",
-  "1 Pedro","2 Pedro","1 João","2 João",
-  "3 João","Judas","Apocalipse"
+  "João",
+  "Atos",
+  "Romanos",
+  "1 Coríntios",
+  "2 Coríntios",
+  "Gálatas",
+  "Efésios",
+  "Filipenses",
+  "Colossenses",
+  "1 Tessalonicenses",
+  "2 Tessalonicenses",
+  "1 Timóteo",
+  "2 Timóteo",
+  "Tito",
+  "Filemom",
+  "Hebreus",
+  "Tiago",
+  "1 Pedro",
+  "2 Pedro",
+  "1 João",
+  "2 João",
+  "3 João",
+  "Judas",
+  "Apocalipse"
 ];
 
 function normalizar(texto) {
@@ -314,11 +314,13 @@ async function obterTexto(numero) {
     .join(" ");
 
   textosPaginas[numero] = texto;
+
   return texto;
 }
 
 function encontrarCabecalho(texto, livro, capitulo) {
   const nome = escaparRegex(livro);
+
   const regex = new RegExp(
     "\\b" + nome + "\\s+(\\d{1,3})(?:\\s*[,/]\\s*(\\d{1,3}))?",
     "gi"
@@ -358,6 +360,7 @@ async function pesquisarReferencia(livro, capitulo, versiculo) {
 
   for (let numero = 1; numero <= totalPaginas; numero++) {
     const texto = await obterTexto(numero);
+
     const cabecalho = encontrarCabecalho(
       texto, livro, capitulo
     );
@@ -425,10 +428,13 @@ async function pesquisar() {
   document.getElementById("status").textContent =
     "Pesquisando no livro...";
 
-  const referencia = consulta.match(/^(.+?)\s+(\d{1,3})\s*:\s*(\d{1,3})$/);
+  const referencia = consulta.match(
+    /^(.+?)\s+(\d{1,3})\s*:\s*(\d{1,3})$/
+  );
 
   if (referencia) {
     const nomeDigitado = normalizar(referencia[1]);
+
     const livro = livros.find(
       nome => normalizar(nome) === nomeDigitado
     );
@@ -450,6 +456,7 @@ async function pesquisar() {
       await mostrarPagina(resultado.pagina);
 
       trecho.style.display = "block";
+
       trecho.innerHTML =
         "<strong>" + livro + " " + capitulo + ":" +
         versiculo + "</strong><br><br>" +
@@ -458,6 +465,7 @@ async function pesquisar() {
       document.getElementById("status").textContent =
         "Referência localizada na página " +
         resultado.pagina + " do PDF.";
+
     } else {
       document.getElementById("status").textContent =
         "Não consegui localizar essa referência no arquivo.";
@@ -474,6 +482,7 @@ async function pesquisar() {
 
     if (normalizar(texto).includes(palavra)) {
       const botao = document.createElement("div");
+
       botao.className = "resultado";
       botao.textContent = "Encontrado na página " + numero;
 
