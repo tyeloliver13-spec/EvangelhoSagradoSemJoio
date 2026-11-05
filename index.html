@@ -1,5 +1,4 @@
 
-  
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -9,6 +8,10 @@
 <title>Evangelho Sagrado Sem Joio</title>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -19,73 +22,119 @@ body {
 
 header {
   background: #49351f;
-  padding: 20px 10px;
+  color: white;
+  padding: 22px 12px;
+}
+
+h1 {
+  margin: 8px 0;
+  font-size: 25px;
+}
+
+main {
+  padding: 20px 14px;
+  max-width: 650px;
+  margin: auto;
+}
+
+/* ÁREA ESCURA COM A CAPA */
+
+.area-livro {
+  background: #29251e;
+  padding: 18px;
+  border-radius: 12px;
+  margin: 10px auto 22px;
+  max-width: 380px;
+}
+
+.capa-botao {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .capa {
   width: 100%;
-  max-width: 380px;
+  max-width: 300px;
   height: auto;
-  object-fit: contain;
   display: block;
   margin: auto;
+  border-radius: 6px;
 }
 
-main {
-  padding: 20px;
+.texto-capa {
+  color: white;
+  margin-top: 12px;
+  font-size: 18px;
 }
+
+/* BOTÕES */
 
 button {
   background: #49351f;
   color: white;
   border: none;
-  padding: 15px;
+  padding: 14px 20px;
   border-radius: 8px;
   font-size: 16px;
-  margin: 8px;
+  margin: 7px;
   cursor: pointer;
 }
 
-.pesquisa {
-  margin: 30px auto;
-  max-width: 500px;
+button:hover {
+  opacity: 0.9;
 }
 
-.pesquisa input {
-  box-sizing: border-box;
+.botoes {
+  margin: 15px 0;
+}
+
+/* PESQUISA */
+
+.pesquisa {
+  background: white;
+  padding: 18px;
+  border-radius: 10px;
+  margin-top: 25px;
+  text-align: left;
+}
+
+.pesquisa h2 {
+  text-align: center;
+}
+
+input {
   width: 100%;
-  padding: 16px;
-  border: 1px solid #49351f;
-  border-radius: 8px;
+  padding: 14px;
+  border: 1px solid #b9aa96;
+  border-radius: 7px;
   font-size: 16px;
 }
 
 #resultados {
-  text-align: left;
-  margin-top: 20px;
+  margin-top: 15px;
+  line-height: 1.6;
 }
 
 .resultado {
-  background: white;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
+  background: #f5f0e6;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 7px;
 }
 
-.resultado button {
-  margin-left: 0;
+.resultado a {
+  color: #49351f;
+  font-weight: bold;
 }
 
-#status {
-  font-size: 14px;
-  margin: 15px;
-}
-
-iframe {
-  width: 100%;
-  height: 65vh;
-  border: none;
-  background: white;
+footer {
+  padding: 20px;
+  color: #665b4c;
+  font-size: 13px;
 }
 </style>
 </head>
@@ -93,61 +142,105 @@ iframe {
 <body>
 
 <header>
-  <img class="capa"
-       src="capa_evangelho_sagrado-1.jpg"
-       alt="Evangelho Sagrado Sem Joio - Novo Testamento">
+  <h1>Evangelho Sagrado Sem Joio</h1>
 </header>
 
 <main>
 
-<h2>Bem-vindo!</h2>
+  <h2>Bem-vindo!</h2>
 
-<p>Leia e compartilhe este livro gratuitamente.</p>
+  <p>
+    Leia e compartilhe este livro gratuitamente.
+  </p>
 
-<button onclick="window.open('evangelho_sagrado.pdf','_blank')">
-LER O LIVRO
-</button>
+  <!-- CAPA DENTRO DA ÁREA ESCURA -->
 
-<button onclick="compartilhar()">
-COMPARTILHAR
-</button>
+  <div class="area-livro">
 
-<section class="pesquisa">
+    <button
+      class="capa-botao"
+      onclick="abrirLivro()"
+      aria-label="Abrir o Evangelho Sagrado">
 
-<h2>Pesquisar no Evangelho</h2>
+      <img
+        class="capa"
+        src="capa_evangelho_sagrado-1.jpg"
+        alt="Capa do Evangelho Sagrado Sem Joio">
 
-<p>
-Pesquise por livro, capítulo, versículo ou palavra.
-</p>
+      <div class="texto-capa">
+        Evangelho Sagrado PDF
+      </div>
 
-<input
-  type="search"
-  id="busca"
-  placeholder="Ex.: João 3:16 ou Mateus 5"
->
+      <div style="color:white; margin-top:8px;">
+        TOQUE NA CAPA PARA ABRIR
+      </div>
 
-<button onclick="pesquisar()">
-PESQUISAR
-</button>
+    </button>
 
-<p id="status"></p>
+  </div>
 
-<div id="resultados"></div>
+  <!-- BOTÕES -->
 
-</section>
+  <div class="botoes">
 
-<iframe
-  src="evangelho_sagrado.pdf"
-  title="Leitura do Evangelho">
-</iframe>
+    <button onclick="abrirLivro()">
+      LER O LIVRO
+    </button>
+
+    <button onclick="compartilhar()">
+      COMPARTILHAR
+    </button>
+
+  </div>
+
+  <!-- PESQUISA -->
+
+  <section class="pesquisa">
+
+    <h2>Pesquisar no Evangelho</h2>
+
+    <p>
+      Pesquise por livro, capítulo, versículo
+      ou palavra.
+    </p>
+
+    <input
+      type="search"
+      id="busca"
+      placeholder="Ex.: João 3:16"
+      aria-label="Pesquisar no Evangelho">
+
+    <button onclick="pesquisar()">
+      PESQUISAR
+    </button>
+
+    <div id="resultados" aria-live="polite"></div>
+
+  </section>
 
 </main>
 
+<footer>
+  Evangelho Sagrado Sem Joio
+  <br>
+  Leitura gratuita para todos.
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 <script>
+
+const arquivoPDF = "evangelho_sagrado.pdf";
+
+function abrirLivro() {
+  window.open(arquivoPDF, "_blank");
+}
+
 async function compartilhar() {
+
   const dados = {
-    title: 'Evangelho Sagrado Sem Joio',
-    text: 'Leia e compartilhe este livro gratuitamente.',
+    title: "Evangelho Sagrado Sem Joio",
+    text: "Leia e compartilhe gratuitamente o Evangelho Sagrado Sem Joio.",
     url: window.location.href
   };
 
@@ -155,168 +248,141 @@ async function compartilhar() {
     try {
       await navigator.share(dados);
     } catch (erro) {
-      console.log('Compartilhamento cancelado.');
+      console.log("Compartilhamento cancelado.");
     }
   } else {
-    await navigator.clipboard.writeText(window.location.href);
-    alert('Endereço do aplicativo copiado!');
+    try {
+      await navigator.clipboard.writeText(dados.url);
+      alert("Link copiado! Compartilhe com seus amigos.");
+    } catch (erro) {
+      alert("Copie o endereço do aplicativo para compartilhar.");
+    }
   }
 }
-</script>
 
-<script type="module">
-
-import * as pdfjsLib from
-'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs';
-
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs';
-
-const PDF_URL = 'evangelho_sagrado.pdf';
+// CONFIGURAÇÃO DA PESQUISA
 
 let documentoPDF = null;
 
-function normalizar(texto) {
-  return texto
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .trim();
+if (window.pdfjsLib) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 }
 
 async function carregarPDF() {
-  if (!documentoPDF) {
-    documentoPDF = await pdfjsLib
-      .getDocument(PDF_URL).promise;
+
+  if (documentoPDF) return documentoPDF;
+
+  if (!window.pdfjsLib) {
+    throw new Error("Não foi possível carregar o sistema de pesquisa.");
   }
+
+  const tarefa = pdfjsLib.getDocument(arquivoPDF);
+  documentoPDF = await tarefa.promise;
 
   return documentoPDF;
 }
 
-window.pesquisar = async function() {
+function normalizar(texto) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
-  const campo = document.getElementById('busca');
-  const resultados = document.getElementById('resultados');
-  const status = document.getElementById('status');
+async function pesquisar() {
+
+  const campo = document.getElementById("busca");
+  const resultados = document.getElementById("resultados");
 
   const termo = normalizar(campo.value);
 
-  resultados.innerHTML = '';
-
   if (!termo) {
-    status.textContent = 'Digite o livro, capítulo ou versículo.';
+    resultados.textContent = "Digite o livro, capítulo, versículo ou palavra que deseja encontrar.";
     return;
   }
 
-  status.textContent = 'Carregando o Evangelho e pesquisando...';
+  resultados.textContent = "Pesquisando no Evangelho...";
 
   try {
 
     const pdf = await carregarPDF();
 
-    let encontrados = 0;
-    const limite = 30;
+    let encontrados = [];
 
-    for (let numero = 1;
-         numero <= pdf.numPages;
-         numero++) {
+    for (let numero = 1; numero <= pdf.numPages; numero++) {
 
       const pagina = await pdf.getPage(numero);
       const conteudo = await pagina.getTextContent();
 
       const texto = conteudo.items
-        .map(item => item.str || '')
-        .join(' ');
+        .map(item => item.str)
+        .join(" ");
 
       if (normalizar(texto).includes(termo)) {
 
-        encontrados++;
+        encontrados.push({
+          pagina: numero,
+          texto: texto.substring(0, 220)
+        });
 
-        const bloco = document.createElement('div');
-        bloco.className = 'resultado';
-
-        const titulo = document.createElement('strong');
-        titulo.textContent = 'Resultado encontrado - Página ' + numero;
-
-        const botao = document.createElement('button');
-        botao.textContent = 'ABRIR ESTA PÁGINA';
-
-        botao.onclick = function() {
-          window.open(
-            PDF_URL + '#page=' + numero,
-            '_blank'
-          );
-        };
-
-        bloco.appendChild(titulo);
-        bloco.appendChild(document.createElement('br'));
-        bloco.appendChild(botao);
-
-        resultados.appendChild(bloco);
-
-        if (encontrados >= limite) {
-          break;
-        }
       }
+
+      if (encontrados.length >= 30) break;
     }
 
-    if (encontrados === 0) {
-      status.textContent =
-        'Nenhum resultado encontrado. Confira a escrita ou tente outra pesquisa.';
-    } else {
-      status.textContent =
-        encontrados + ' resultado(s) encontrado(s).';
+    if (encontrados.length === 0) {
+      resultados.textContent =
+        "Nenhum resultado encontrado. Confira a escrita ou tente outra pesquisa.";
+      return;
     }
+
+    resultados.innerHTML =
+      "<strong>Resultados encontrados:</strong>";
+
+    encontrados.forEach(item => {
+
+      const div = document.createElement("div");
+      div.className = "resultado";
+
+      const descricao = document.createElement("p");
+      descricao.textContent = item.texto + "...";
+
+      const link = document.createElement("a");
+      link.href = arquivoPDF + "#page=" + item.pagina;
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.textContent = "Abrir página " + item.pagina;
+
+      div.appendChild(descricao);
+      div.appendChild(link);
+
+      resultados.appendChild(div);
+
+    });
 
   } catch (erro) {
 
+    resultados.textContent =
+      "Não foi possível realizar a pesquisa. Verifique se o PDF está disponível e tente novamente.";
+
     console.error(erro);
 
-    status.textContent =
-      'Não foi possível pesquisar o PDF. Verifique se o arquivo está disponível e se possui texto selecionável.';
   }
+}
 
-};
-
-document.getElementById('busca')
-  .addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-      window.pesquisar();
+document.getElementById("busca").addEventListener(
+  "keydown",
+  function(event) {
+    if (event.key === "Enter") {
+      pesquisar();
     }
-  });
+  }
+);
 
 </script>
 
 </body>
 </html>
-
-
-  
-  
-       
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
