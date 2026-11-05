@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Evangelho Sagrado Sem Joio</title>
 
 <style>
@@ -22,128 +22,156 @@ body {
 header {
   background: #49351f;
   color: white;
-  padding: 20px 10px;
+  padding: 18px 10px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 23px;
 }
 
 main {
-  max-width: 700px;
-  margin: auto;
-  padding: 18px 12px;
+  padding: 15px;
 }
 
 .area-livro {
-  background: #29251e;
-  padding: 18px;
+  background: #21180f;
   border-radius: 12px;
-  max-width: 380px;
+  padding: 18px;
+  max-width: 420px;
   margin: 20px auto;
 }
 
-.capa-botao {
-  border: 0;
-  background: transparent;
-  padding: 0;
-  width: 100%;
-  cursor: pointer;
-}
-
 .capa {
+  display: block;
   width: 100%;
   max-width: 300px;
   height: auto;
-  display: block;
   margin: auto;
-  border-radius: 6px;
-}
-
-.texto-capa {
-  color: white;
-  font-size: 18px;
-  margin-top: 12px;
+  border-radius: 5px;
 }
 
 button {
   background: #49351f;
   color: white;
-  border: 0;
-  border-radius: 8px;
+  border: none;
   padding: 13px 18px;
+  border-radius: 8px;
   font-size: 16px;
   margin: 6px;
   cursor: pointer;
 }
 
-button:disabled {
-  opacity: 0.5;
-}
-
-.pesquisa {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin: 15px 0;
-  text-align: left;
-}
-
-input {
-  width: 100%;
-  padding: 13px;
-  border: 1px solid #b9aa96;
-  border-radius: 7px;
-  font-size: 16px;
+button:active {
+  opacity: 0.8;
 }
 
 #leitor {
   display: none;
-  margin-top: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
 }
 
-#leitor.ativo {
+/* Pesquisa fixa acima da leitura */
+.pesquisa-fixa {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #f5f0e6;
+  padding: 12px 5px;
+  border-bottom: 1px solid #d2c5b3;
+}
+
+#campoPesquisa {
+  width: 100%;
+  max-width: 500px;
+  padding: 13px;
+  border: 1px solid #a99a85;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+#resultados {
+  max-height: 180px;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 8px;
+  margin: 8px auto;
+  max-width: 500px;
+}
+
+.resultado {
   display: block;
+  width: 95%;
+  margin: 6px auto;
+  background: #eee5d8;
+  color: #29251e;
 }
 
-.controles {
-  background: #e8dfd1;
-  padding: 10px;
-  border-radius: 9px;
-  margin: 12px 0;
+/* Área de leitura horizontal */
+#areaLeitura {
+  position: relative;
+  width: 100%;
+  min-height: 55vh;
+  margin: 15px auto;
+  overflow: hidden;
+  background: #ded5c7;
+  border-radius: 8px;
+  border: 1px solid #b9aa96;
+  touch-action: pan-y;
+  user-select: none;
 }
 
 #paginaPDF {
-  background: white;
+  width: 100%;
+  min-height: 55vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   padding: 8px;
-  min-height: 200px;
-  overflow: auto;
-  border-radius: 8px;
+  transition: transform 0.18s ease;
+}
+
+#paginaPDF.animando-esquerda {
+  transform: translateX(-35px);
+}
+
+#paginaPDF.animando-direita {
+  transform: translateX(35px);
 }
 
 #paginaPDF canvas {
   display: block;
   max-width: 100%;
   height: auto;
-  margin: auto;
+  background: white;
+  box-shadow: 0 2px 8px #0003;
+  pointer-events: none;
 }
 
-.resultado {
-  background: #f5f0e6;
-  border-radius: 7px;
+.controles {
   padding: 10px;
-  margin-top: 9px;
 }
 
-.resultado button {
-  font-size: 14px;
+#numeroPagina {
+  font-weight: bold;
+  margin: 8px;
 }
 
 #mensagem {
+  padding: 8px;
   font-size: 14px;
-  line-height: 1.5;
 }
 
-footer {
-  padding: 20px;
-  font-size: 13px;
-  color: #665b4c;
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 20px;
+  }
+
+  #areaLeitura {
+    min-height: 60vh;
+  }
 }
 </style>
 </head>
@@ -156,398 +184,306 @@ footer {
 
 <main>
 
-  <section id="inicio">
+<section id="inicio">
 
-    <h2>Bem-vindo!</h2>
+  <h2>Bem-vindo</h2>
 
-    <p>Leia e compartilhe este livro gratuitamente.</p>
+  <div class="area-livro">
+    <img
+      class="capa"
+      src="capa_evangelho_sagrado-1.jpg"
+      alt="Capa do Evangelho Sagrado Sem Joio"
+      onclick="abrirLivro()"
+    >
+  </div>
 
-    <div class="area-livro">
+  <button onclick="abrirLivro()">ABRIR O EVANGELHO</button>
 
-      <button class="capa-botao" onclick="abrirLivro()">
+  <button onclick="compartilhar()">COMPARTILHAR</button>
 
-        <img
-          class="capa"
-          src="capa_evangelho_sagrado-1.jpg"
-          alt="Capa do Evangelho Sagrado Sem Joio">
+</section>
 
-        <div class="texto-capa">
-          Evangelho Sagrado PDF
-        </div>
+<section id="leitor">
 
-        <p style="color:white;">
-          TOQUE NA CAPA PARA ABRIR
-        </p>
+  <div class="pesquisa-fixa">
+    <input
+      id="campoPesquisa"
+      type="search"
+      placeholder="Pesquisar livro, capítulo, versículo ou palavra..."
+    >
 
-      </button>
+    <button onclick="pesquisar()">PESQUISAR</button>
 
-    </div>
+    <div id="resultados"></div>
+  </div>
 
-    <button onclick="abrirLivro()">LER O LIVRO</button>
+  <h2>Evangelho Sagrado</h2>
 
-    <button onclick="compartilhar()">COMPARTILHAR</button>
+  <div id="mensagem">Carregando o Evangelho...</div>
 
-  </section>
+  <div id="areaLeitura">
+    <div id="paginaPDF"></div>
+  </div>
 
-  <!-- LEITOR DO LIVRO -->
+  <div class="controles">
+    <button onclick="paginaAnterior()">← ANTERIOR</button>
 
-  <section id="leitor">
+    <span id="numeroPagina">Página 1</span>
 
-    <h2>Leitura do Evangelho</h2>
+    <button onclick="proximaPagina()">PRÓXIMA →</button>
+  </div>
 
-    <div class="pesquisa">
+  <button onclick="voltarInicio()">VOLTAR AO INÍCIO</button>
 
-      <h3>Pesquisar no Evangelho</h3>
-
-      <p>
-        Pesquise por livro, capítulo, versículo
-        ou palavra.
-      </p>
-
-      <input
-        id="busca"
-        type="search"
-        placeholder="Ex.: João 3:16">
-
-      <button onclick="pesquisar()">
-        PESQUISAR
-      </button>
-
-      <div id="mensagem"></div>
-
-      <div id="resultados"></div>
-
-    </div>
-
-    <div class="controles">
-
-      <button onclick="paginaAnterior()">
-        ANTERIOR
-      </button>
-
-      <span id="numeroPagina">Página 1</span>
-
-      <button onclick="proximaPagina()">
-        PRÓXIMA
-      </button>
-
-    </div>
-
-    <div id="paginaPDF">
-      Carregando o livro...
-    </div>
-
-    <button onclick="voltarInicio()">
-      VOLTAR AO INÍCIO
-    </button>
-
-  </section>
+</section>
 
 </main>
-
-<footer>
-  Evangelho Sagrado Sem Joio
-  <br>
-  Leitura gratuita para todos.
-</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <script>
-
-const arquivoPDF = "evangelho_sagrado.pdf";
-
-let documentoPDF = null;
-let paginaAtual = 1;
-let pesquisando = false;
-
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-async function carregarPDF() {
-
-  if (documentoPDF) return documentoPDF;
-
-  const tarefa = pdfjsLib.getDocument(arquivoPDF);
-
-  documentoPDF = await tarefa.promise;
-
-  return documentoPDF;
-}
+let pdf = null;
+let paginaAtual = 1;
+let totalPaginas = 0;
+let renderizando = false;
 
 async function abrirLivro() {
-
   document.getElementById("inicio").style.display = "none";
+  document.getElementById("leitor").style.display = "block";
 
-  const leitor = document.getElementById("leitor");
-
-  leitor.classList.add("ativo");
-
-  try {
-
-    await carregarPDF();
-
-    paginaAtual = 1;
-
-    await mostrarPagina(paginaAtual);
-
-  } catch (erro) {
-
-    document.getElementById("paginaPDF").textContent =
-      "Não foi possível abrir o PDF. Confira se o arquivo evangelho_sagrado.pdf está no GitHub.";
-
+  if (pdf) {
+    mostrarPagina(1);
+    return;
   }
 
-}
+  document.getElementById("mensagem").textContent =
+    "Carregando o livro...";
 
-function voltarInicio() {
+  try {
+    pdf = await pdfjsLib.getDocument("evangelho_sagrado.pdf").promise;
 
-  document.getElementById("leitor").classList.remove("ativo");
+    totalPaginas = pdf.numPages;
+    paginaAtual = 1;
 
-  document.getElementById("inicio").style.display = "block";
+    document.getElementById("mensagem").textContent =
+      "Evangelho carregado. Deslize para os lados para virar as páginas.";
 
-  window.scrollTo(0, 0);
+    mostrarPagina(1);
 
+  } catch (erro) {
+    document.getElementById("mensagem").textContent =
+      "Não foi possível abrir o PDF. Confira se o arquivo evangelho_sagrado.pdf está no GitHub.";
+  }
 }
 
 async function mostrarPagina(numero) {
+  if (!pdf || renderizando) return;
 
-  const pdf = await carregarPDF();
+  if (numero < 1 || numero > totalPaginas) return;
 
-  if (numero < 1 || numero > pdf.numPages) return;
-
+  renderizando = true;
   paginaAtual = numero;
 
-  const pagina = await pdf.getPage(numero);
-
   const area = document.getElementById("paginaPDF");
-
-  const escalaBase = 1.5;
-
-  const viewportOriginal = pagina.getViewport({
-    scale: escalaBase
-  });
-
-  const larguraMaxima = Math.min(
-    area.clientWidth - 16,
-    650
-  );
-
-  const escala = escalaBase * Math.min(
-    1,
-    larguraMaxima / viewportOriginal.width
-  );
-
-  const viewport = pagina.getViewport({
-    scale: escala
-  });
-
-  const canvas = document.createElement("canvas");
-
-  const contexto = canvas.getContext("2d");
-
-  canvas.width = viewport.width;
-  canvas.height = viewport.height;
-
   area.innerHTML = "";
 
-  area.appendChild(canvas);
+  try {
+    const pagina = await pdf.getPage(numero);
 
-  await pagina.render({
-    canvasContext: contexto,
-    viewport: viewport
-  }).promise;
+    const larguraDisponivel =
+      Math.min(area.clientWidth - 16, 750);
 
-  document.getElementById("numeroPagina").textContent =
-    "Página " + numero + " de " + pdf.numPages;
+    const escalaOriginal = pagina.getViewport({ scale: 1 });
 
+    const escala = larguraDisponivel / escalaOriginal.width;
+
+    const viewport = pagina.getViewport({ scale: escala });
+
+    const canvas = document.createElement("canvas");
+    const contexto = canvas.getContext("2d");
+
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    area.appendChild(canvas);
+
+    await pagina.render({
+      canvasContext: contexto,
+      viewport: viewport
+    }).promise;
+
+    document.getElementById("numeroPagina").textContent =
+      "Página " + paginaAtual + " de " + totalPaginas;
+
+  } catch (erro) {
+    document.getElementById("mensagem").textContent =
+      "Erro ao mostrar esta página.";
+  }
+
+  renderizando = false;
 }
 
-async function paginaAnterior() {
+function proximaPagina() {
+  if (paginaAtual < totalPaginas) {
+    animarPagina("esquerda");
+    mostrarPagina(paginaAtual + 1);
+  }
+}
 
+function paginaAnterior() {
   if (paginaAtual > 1) {
-    await mostrarPagina(paginaAtual - 1);
+    animarPagina("direita");
+    mostrarPagina(paginaAtual - 1);
+  }
+}
+
+function animarPagina(direcao) {
+  const area = document.getElementById("paginaPDF");
+
+  area.classList.remove(
+    "animando-esquerda",
+    "animando-direita"
+  );
+
+  if (direcao === "esquerda") {
+    area.classList.add("animando-esquerda");
+  } else {
+    area.classList.add("animando-direita");
   }
 
+  setTimeout(() => {
+    area.classList.remove(
+      "animando-esquerda",
+      "animando-direita"
+    );
+  }, 180);
 }
 
-async function proximaPagina() {
+/* Deslizar o dedo para virar as páginas */
+let inicioX = 0;
+let inicioY = 0;
 
-  const pdf = await carregarPDF();
+const areaLeitura = document.getElementById("areaLeitura");
 
-  if (paginaAtual < pdf.numPages) {
-    await mostrarPagina(paginaAtual + 1);
+areaLeitura.addEventListener("touchstart", function(event) {
+  inicioX = event.changedTouches[0].screenX;
+  inicioY = event.changedTouches[0].screenY;
+}, { passive: true });
+
+areaLeitura.addEventListener("touchend", function(event) {
+  const fimX = event.changedTouches[0].screenX;
+  const fimY = event.changedTouches[0].screenY;
+
+  const diferencaX = fimX - inicioX;
+  const diferencaY = fimY - inicioY;
+
+  if (Math.abs(diferencaX) > 50 &&
+      Math.abs(diferencaX) > Math.abs(diferencaY)) {
+
+    if (diferencaX < 0) {
+      proximaPagina();
+    } else {
+      paginaAnterior();
+    }
   }
+}, { passive: true });
 
-}
-
-function normalizar(texto) {
-
-  return texto
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .trim();
-
-}
-
+/* Pesquisa dentro do PDF */
 async function pesquisar() {
+  if (!pdf) return;
 
-  if (pesquisando) return;
+  const campo = document.getElementById("campoPesquisa");
+  const termo = normalizar(campo.value);
 
-  const termoOriginal =
-    document.getElementById("busca").value.trim();
-
-  const termo = normalizar(termoOriginal);
-
-  const mensagem = document.getElementById("mensagem");
   const resultados = document.getElementById("resultados");
-
   resultados.innerHTML = "";
 
   if (!termo) {
-
-    mensagem.textContent = "Digite o que deseja pesquisar.";
-
+    resultados.textContent = "Digite algo para pesquisar.";
     return;
-
   }
 
-  pesquisando = true;
+  resultados.textContent = "Pesquisando no Evangelho...";
 
-  mensagem.textContent = "Pesquisando no Evangelho...";
+  const encontrados = [];
 
-  try {
+  for (let i = 1; i <= totalPaginas; i++) {
+    const pagina = await pdf.getPage(i);
+    const texto = await pagina.getTextContent();
 
-    const pdf = await carregarPDF();
+    const conteudo = normalizar(
+      texto.items.map(item => item.str).join(" ")
+    );
 
-    let encontrados = [];
-
-    for (let numero = 1; numero <= pdf.numPages; numero++) {
-
-      const pagina = await pdf.getPage(numero);
-
-      const conteudo = await pagina.getTextContent();
-
-      const texto = conteudo.items
-        .map(item => item.str)
-        .join(" ");
-
-      if (normalizar(texto).includes(termo)) {
-
-        encontrados.push({
-          numero: numero,
-          texto: texto.substring(0, 250)
-        });
-
-      }
-
-      if (encontrados.length >= 50) break;
-
+    if (conteudo.includes(termo)) {
+      encontrados.push(i);
     }
 
-    if (encontrados.length === 0) {
-
-      mensagem.textContent =
-        "Nenhum resultado encontrado. Tente outra palavra ou expressão.";
-
-      return;
-
-    }
-
-    mensagem.textContent =
-      encontrados.length + " resultado(s) encontrado(s):";
-
-    encontrados.forEach(item => {
-
-      const div = document.createElement("div");
-
-      div.className = "resultado";
-
-      const texto = document.createElement("p");
-
-      texto.textContent = item.texto + "...";
-
-      const botao = document.createElement("button");
-
-      botao.textContent = "ABRIR PÁGINA " + item.numero;
-
-      botao.onclick = async function() {
-
-        await mostrarPagina(item.numero);
-
-        document.getElementById("paginaPDF")
-          .scrollIntoView({ behavior: "smooth" });
-
-      };
-
-      div.appendChild(texto);
-
-      div.appendChild(botao);
-
-      resultados.appendChild(div);
-
-    });
-
-  } catch (erro) {
-
-    mensagem.textContent =
-      "Erro na pesquisa. Confira a conexão e o arquivo PDF.";
-
-  } finally {
-
-    pesquisando = false;
-
+    if (encontrados.length >= 50) break;
   }
 
+  resultados.innerHTML = "";
+
+  if (encontrados.length === 0) {
+    resultados.textContent = "Nenhum resultado encontrado.";
+    return;
+  }
+
+  encontrados.forEach(numero => {
+    const botao = document.createElement("button");
+
+    botao.className = "resultado";
+    botao.textContent = "ABRIR PÁGINA " + numero;
+
+    botao.onclick = function() {
+      mostrarPagina(numero);
+
+      document.getElementById("resultados").innerHTML = "";
+    };
+
+    resultados.appendChild(botao);
+  });
 }
 
-document.getElementById("busca").addEventListener(
-  "keydown",
-  function(event) {
+function normalizar(texto) {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
-    if (event.key === "Enter") {
-      pesquisar();
-    }
-
-  }
-);
+function voltarInicio() {
+  document.getElementById("leitor").style.display = "none";
+  document.getElementById("inicio").style.display = "block";
+}
 
 async function compartilhar() {
-
-  const dados = {
-    title: "Evangelho Sagrado Sem Joio",
-    text: "Leia gratuitamente o Evangelho Sagrado Sem Joio.",
-    url: window.location.href
-  };
+  const endereco = window.location.href;
 
   if (navigator.share) {
-
     try {
-      await navigator.share(dados);
+      await navigator.share({
+        title: "Evangelho Sagrado Sem Joio",
+        text: "Leia o Evangelho Sagrado Sem Joio.",
+        url: endereco
+      });
     } catch (erro) {
-      console.log("Compartilhamento cancelado.");
+      // Compartilhamento cancelado pelo usuário.
     }
-
   } else {
-
     try {
-
-      await navigator.clipboard.writeText(dados.url);
-
-      alert("Link copiado para compartilhar!");
-
+      await navigator.clipboard.writeText(endereco);
+      alert("Endereço do aplicativo copiado!");
     } catch (erro) {
-
       alert("Copie o endereço do aplicativo para compartilhar.");
-
     }
-
   }
-
 }
-
 </script>
 
 </body>
