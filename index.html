@@ -7,52 +7,75 @@
 <title>Evangelho Sagrado Sem Joio</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-body {
+html, body {
   margin: 0;
+  min-height: 100%;
   font-family: Arial, sans-serif;
   background: #f5f0e6;
   color: #29251e;
+}
+
+body {
   text-align: center;
 }
 
 header {
-  background: #49351f;
+  background: #123f78;
   color: white;
-  padding: 18px 10px;
+  padding: 15px 10px;
 }
 
 header h1 {
   margin: 0;
-  font-size: 23px;
+  font-size: 22px;
 }
 
-main { padding: 15px; }
-#inicio { padding: 12px; }
+header p {
+  margin: 5px 0 0;
+  font-size: 14px;
+}
 
-.capa {
-  width: 75%;
-  max-width: 280px;
-  height: auto;
-  display: block;
-  margin: 15px auto;
-  border-radius: 8px;
-  cursor: pointer;
+.botoesInicio {
+  background: #123f78;
+  padding: 8px 5px 12px;
 }
 
 button {
-  background: #49351f;
+  background: #1760a8;
   color: white;
   border: none;
   padding: 13px 17px;
   border-radius: 8px;
   font-size: 16px;
-  margin: 6px;
+  margin: 5px;
   cursor: pointer;
 }
 
-button:disabled { opacity: .5; }
+button:disabled {
+  opacity: .5;
+}
+
+#inicio {
+  min-height: calc(100vh - 110px);
+  display: flex;
+  flex-direction: column;
+}
+
+.capa {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: calc(100vh - 125px);
+  object-fit: contain;
+  object-position: center;
+  margin: 0 auto;
+  padding: 5px;
+  cursor: pointer;
+}
 
 #leitor {
   display: none;
@@ -60,43 +83,50 @@ button:disabled { opacity: .5; }
 }
 
 #campoPesquisa {
+  display: block;
   width: 100%;
-  padding: 14px;
-  border: 1px solid #8c765e;
-  border-radius: 8px;
-  font-size: 16px;
-  margin-bottom: 8px;
+  max-width: 900px;
+  margin: 5px auto 10px;
+  padding: 18px;
+  border: 2px solid #1760a8;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+.botoesLeitor {
+  margin-bottom: 10px;
 }
 
 #resultados {
   text-align: left;
   margin: 8px auto 15px;
-  max-width: 700px;
+  max-width: 900px;
 }
 
 .resultado {
   background: white;
   border: 1px solid #d4c6b3;
   border-radius: 8px;
-  padding: 12px;
+  padding: 13px;
   margin: 7px 0;
   cursor: pointer;
 }
 
-#areaLeitura {
-  background: #30271e;
-  padding: 8px;
+#trechoEncontrado {
+  background: white;
+  border: 1px solid #d4c6b3;
   border-radius: 8px;
-  overflow: hidden;
-  touch-action: pan-y;
+  padding: 12px;
+  margin: 10px auto;
+  max-width: 900px;
+  text-align: left;
+  display: none;
+  line-height: 1.6;
 }
 
-#paginaPDF {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: auto;
-  background: white;
+#status {
+  font-size: 14px;
+  margin: 10px;
 }
 
 #informacao {
@@ -104,19 +134,63 @@ button:disabled { opacity: .5; }
   font-weight: bold;
 }
 
-#trechoEncontrado {
-  background: #fff;
-  border: 1px solid #d4c6b3;
-  border-radius: 8px;
-  padding: 12px;
-  margin: 10px 0;
-  text-align: left;
-  display: none;
+#numeroPagina {
+  margin: 10px;
+  font-weight: bold;
 }
 
-#status {
-  font-size: 14px;
-  margin: 8px;
+#areaLeitura {
+  background: #30271e;
+  padding: 8px;
+  border-radius: 8px;
+  width: 100%;
+  height: 72vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+.pagina {
+  width: 100%;
+  max-width: 950px;
+  margin: 0 auto 12px;
+  background: white;
+}
+
+.pagina canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: white;
+}
+
+.carregandoPagina {
+  padding: 35px 10px;
+  color: #555;
+  background: white;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 19px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  #areaLeitura {
+    height: 72vh;
+    padding: 4px;
+  }
+
+  .pagina {
+    margin-bottom: 8px;
+  }
 }
 </style>
 </head>
@@ -128,39 +202,40 @@ button:disabled { opacity: .5; }
   <p>NOVO TESTAMENTO</p>
 </header>
 
-<main>
-
 <section id="inicio">
+  <div class="botoesInicio">
+    <button onclick="abrirLivro()">ABRIR LIVRO</button>
+    <button onclick="compartilhar()">COMPARTILHAR</button>
+  </div>
+
   <img
     class="capa"
     src="capa_evangelho_sagrado-1.jpg"
     alt="Capa do Evangelho Sagrado Sem Joio"
     onclick="abrirLivro()"
   >
-
-  <button onclick="abrirLivro()">ABRIR LIVRO</button>
-  <button onclick="compartilhar()">COMPARTILHAR</button>
 </section>
 
-<section id="leitor">
+<main id="leitor">
 
   <input
     id="campoPesquisa"
     type="search"
-    placeholder="Pesquisar livro, capítulo, versículo ou palavra..."
+    placeholder="Pesquise livro, capítulo, versículo ou palavra..."
+    onkeydown="if(event.key === 'Enter') pesquisar()"
   >
 
-  <button onclick="pesquisar()">PESQUISAR</button>
-  <button onclick="voltarInicio()">VOLTAR AO INÍCIO</button>
+  <div class="botoesLeitor">
+    <button onclick="pesquisar()">PESQUISAR</button>
+    <button onclick="voltarInicio()">VOLTAR AO INÍCIO</button>
+  </div>
 
   <div id="status"></div>
   <div id="resultados"></div>
   <div id="trechoEncontrado"></div>
-  <div id="informacao"></div>
+  <div id="informacao">Evangelho Sagrado Sem Joio</div>
 
-  <div id="areaLeitura">
-    <canvas id="paginaPDF"></canvas>
-  </div>
+  <div id="areaLeitura"></div>
 
   <div>
     <button onclick="paginaAnterior()">◀ ANTERIOR</button>
@@ -168,8 +243,6 @@ button:disabled { opacity: .5; }
   </div>
 
   <div id="numeroPagina"></div>
-
-</section>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -182,9 +255,10 @@ let pdf = null;
 let paginaAtual = 1;
 let totalPaginas = 0;
 let textosPaginas = {};
-let carregando = false;
-
-/* LISTA DE LIVROS: JOÃO ATÉ APOCALIPSE */
+let paginasElementos = {};
+let paginasRenderizadas = {};
+let paginasRenderizando = {};
+let observador = null;
 
 const livros = [
   "João",
@@ -239,6 +313,8 @@ async function abrirLivro() {
       pdf = await tarefa.promise;
       totalPaginas = pdf.numPages;
 
+      criarPaginas();
+
       document.getElementById("status").textContent =
         "Livro carregado. Você já pode pesquisar.";
 
@@ -256,49 +332,122 @@ async function abrirLivro() {
 
 function voltarInicio() {
   document.getElementById("leitor").style.display = "none";
-  document.getElementById("inicio").style.display = "block";
+  document.getElementById("inicio").style.display = "flex";
 }
 
-async function mostrarPagina(numero) {
-  if (!pdf || carregando) return;
+function criarPaginas() {
+  const area = document.getElementById("areaLeitura");
+  area.innerHTML = "";
 
-  numero = Math.max(1, Math.min(numero, totalPaginas));
-  paginaAtual = numero;
-  carregando = true;
+  for (let numero = 1; numero <= totalPaginas; numero++) {
+    const bloco = document.createElement("div");
+    bloco.className = "pagina";
+    bloco.id = "pagina-" + numero;
+    bloco.dataset.numero = numero;
+
+    const aviso = document.createElement("div");
+    aviso.className = "carregandoPagina";
+    aviso.textContent = "Página " + numero;
+
+    bloco.appendChild(aviso);
+    area.appendChild(bloco);
+
+    paginasElementos[numero] = bloco;
+  }
+
+  if ("IntersectionObserver" in window) {
+    observador = new IntersectionObserver(
+      function(entradas) {
+        entradas.forEach(function(entrada) {
+          if (entrada.isIntersecting) {
+            const numero = Number(entrada.target.dataset.numero);
+            renderizarPagina(numero);
+            paginaAtual = numero;
+
+            document.getElementById("numeroPagina").textContent =
+              "Página " + numero + " de " + totalPaginas;
+          }
+        });
+      },
+      {
+        root: area,
+        rootMargin: "900px 0px",
+        threshold: 0
+      }
+    );
+
+    Object.values(paginasElementos).forEach(function(bloco) {
+      observador.observe(bloco);
+    });
+  }
+}
+
+async function renderizarPagina(numero) {
+  if (!pdf || paginasRenderizadas[numero] ||
+      paginasRenderizando[numero]) {
+    return;
+  }
+
+  paginasRenderizando[numero] = true;
 
   try {
     const pagina = await pdf.getPage(numero);
-    const canvas = document.getElementById("paginaPDF");
+    const bloco = paginasElementos[numero];
+    const largura = Math.max(200, bloco.clientWidth);
+
+    const viewportOriginal = pagina.getViewport({ scale: 1 });
+    const escala = largura / viewportOriginal.width;
+    const densidade = window.devicePixelRatio || 1;
+
+    const viewportRender = pagina.getViewport({
+      scale: escala * densidade
+    });
+
+    const canvas = document.createElement("canvas");
     const contexto = canvas.getContext("2d");
 
-    const larguraMaxima = Math.min(
-      document.getElementById("areaLeitura").clientWidth - 16,
-      900
-    );
+    canvas.width = viewportRender.width;
+    canvas.height = viewportRender.height;
 
-    const escalaOriginal = pagina.getViewport({scale: 1});
-    const escala = larguraMaxima / escalaOriginal.width;
-    const viewport = pagina.getViewport({scale: escala});
+    canvas.style.width = "100%";
+    canvas.style.height = "auto";
 
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
+    bloco.innerHTML = "";
+    bloco.appendChild(canvas);
 
     await pagina.render({
       canvasContext: contexto,
-      viewport: viewport
+      viewport: viewportRender
     }).promise;
 
-    document.getElementById("numeroPagina").textContent =
-      "Página " + numero + " de " + totalPaginas;
-
-    document.getElementById("informacao").textContent =
-      "Evangelho Sagrado Sem Joio";
+    paginasRenderizadas[numero] = true;
 
   } catch (erro) {
-    console.error(erro);
+    console.error("Erro ao renderizar página", numero, erro);
   }
 
-  carregando = false;
+  paginasRenderizando[numero] = false;
+}
+
+async function mostrarPagina(numero) {
+  if (!pdf) return;
+
+  numero = Math.max(1, Math.min(numero, totalPaginas));
+  paginaAtual = numero;
+
+  const bloco = paginasElementos[numero];
+
+  if (bloco) {
+    await renderizarPagina(numero);
+
+    bloco.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  document.getElementById("numeroPagina").textContent =
+    "Página " + numero + " de " + totalPaginas;
 }
 
 async function obterTexto(numero) {
@@ -314,7 +463,6 @@ async function obterTexto(numero) {
     .join(" ");
 
   textosPaginas[numero] = texto;
-
   return texto;
 }
 
@@ -322,86 +470,70 @@ function encontrarCabecalho(texto, livro, capitulo) {
   const nome = escaparRegex(livro);
 
   const regex = new RegExp(
-    "\\b" + nome + "\\s+(\\d{1,3})(?:\\s*[,/]\\s*(\\d{1,3}))?",
-    "gi"
+    "(?:^|\\s)" + nome + "\\s+" + capitulo +
+    "(?=\\s|$|[:.,])",
+    "i"
   );
 
-  let resultado;
-
-  while ((resultado = regex.exec(texto)) !== null) {
-    if (
-      Number(resultado[1]) === capitulo ||
-      Number(resultado[2]) === capitulo
-    ) {
-      return resultado.index;
-    }
-  }
-
-  return -1;
+  return regex.test(texto);
 }
 
-function encontrarVersiculo(texto, versiculo, inicio) {
+function encontrarVersiculo(texto, versiculo) {
   const regex = new RegExp(
     "(?:^|\\s)" + versiculo +
-    "\\s*(?=[A-ZÁÉÍÓÚÀÂÊÔÃÕÇ(])",
+    "\\s+(?=[A-ZÁÉÍÓÚÀÂÊÔÃÕÇ(])",
     "g"
   );
 
-  regex.lastIndex = Math.max(0, inicio);
-
   const resultado = regex.exec(texto);
-
   return resultado ? resultado.index : -1;
 }
 
 async function pesquisarReferencia(livro, capitulo, versiculo) {
-  let encontrouCapitulo = false;
-  let paginaCapitulo = 1;
+  let paginaCapitulo = 0;
 
   for (let numero = 1; numero <= totalPaginas; numero++) {
     const texto = await obterTexto(numero);
 
-    const cabecalho = encontrarCabecalho(
-      texto, livro, capitulo
-    );
-
-    if (cabecalho >= 0 && !encontrouCapitulo) {
-      encontrouCapitulo = true;
+    if (encontrarCabecalho(texto, livro, capitulo)) {
       paginaCapitulo = numero;
+      break;
+    }
+  }
+
+  if (!paginaCapitulo) return null;
+
+  if (!versiculo) {
+    return {
+      pagina: paginaCapitulo,
+      texto: "Capítulo localizado no PDF."
+    };
+  }
+
+  for (let numero = paginaCapitulo; numero <= totalPaginas; numero++) {
+    const texto = await obterTexto(numero);
+
+    if (
+      numero > paginaCapitulo &&
+      encontrarCabecalho(texto, livro, capitulo + 1)
+    ) {
+      break;
     }
 
-    if (!encontrouCapitulo) continue;
-
-    const inicio = cabecalho >= 0 ? cabecalho : 0;
-
-    const posicao = encontrarVersiculo(
-      texto, versiculo, inicio
-    );
+    const posicao = encontrarVersiculo(texto, versiculo);
 
     if (posicao >= 0) {
       return {
         pagina: numero,
-        texto: texto.substring(posicao, posicao + 260)
+        texto: texto.substring(posicao, posicao + 350)
       };
     }
-
-    if (numero > paginaCapitulo && cabecalho >= 0) {
-      const outroCabecalho = encontrarCabecalho(
-        texto, livro, capitulo + 1
-      );
-
-      if (outroCabecalho >= 0) break;
-    }
   }
 
-  if (encontrouCapitulo) {
-    return {
-      pagina: paginaCapitulo,
-      texto: "Capítulo encontrado. Confira o versículo nesta página."
-    };
-  }
-
-  return null;
+  return {
+    pagina: paginaCapitulo,
+    texto: "O capítulo foi localizado, mas não consegui identificar com segurança o versículo no texto extraído."
+  };
 }
 
 async function pesquisar() {
@@ -410,43 +542,42 @@ async function pesquisar() {
     if (!pdf) return;
   }
 
-  const campo = document.getElementById("campoPesquisa");
-  const consulta = campo.value.trim();
-
+  const consulta = document.getElementById("campoPesquisa").value.trim();
   const resultados = document.getElementById("resultados");
   const trecho = document.getElementById("trechoEncontrado");
+  const status = document.getElementById("status");
 
   resultados.innerHTML = "";
   trecho.style.display = "none";
 
   if (!consulta) {
-    document.getElementById("status").textContent =
-      "Digite o que deseja pesquisar.";
+    status.textContent = "Digite o que deseja pesquisar.";
     return;
   }
 
-  document.getElementById("status").textContent =
-    "Pesquisando no livro...";
+  status.textContent = "Pesquisando no livro...";
 
   const referencia = consulta.match(
-    /^(.+?)\s+(\d{1,3})\s*:\s*(\d{1,3})$/
+    /^(.+?)\s+(\d{1,3})(?:\s*:\s*(\d{1,3}))?$/
   );
 
   if (referencia) {
     const nomeDigitado = normalizar(referencia[1]);
 
-    const livro = livros.find(
-      nome => normalizar(nome) === nomeDigitado
-    );
+    const livro = livros.find(function(nome) {
+      return normalizar(nome) === nomeDigitado;
+    });
 
     if (!livro) {
-      document.getElementById("status").textContent =
+      status.textContent =
         "Não reconheci o nome do livro. Confira a escrita.";
       return;
     }
 
     const capitulo = Number(referencia[2]);
-    const versiculo = Number(referencia[3]);
+    const versiculo = referencia[3]
+      ? Number(referencia[3])
+      : null;
 
     const resultado = await pesquisarReferencia(
       livro, capitulo, versiculo
@@ -457,17 +588,21 @@ async function pesquisar() {
 
       trecho.style.display = "block";
 
-      trecho.innerHTML =
-        "<strong>" + livro + " " + capitulo + ":" +
-        versiculo + "</strong><br><br>" +
-        resultado.texto;
+      const titulo = document.createElement("strong");
+      titulo.textContent = livro + " " + capitulo +
+        (versiculo ? ":" + versiculo : "");
 
-      document.getElementById("status").textContent =
+      const texto = document.createElement("p");
+      texto.textContent = resultado.texto;
+
+      trecho.replaceChildren(titulo, texto);
+
+      status.textContent =
         "Referência localizada na página " +
         resultado.pagina + " do PDF.";
 
     } else {
-      document.getElementById("status").textContent =
+      status.textContent =
         "Não consegui localizar essa referência no arquivo.";
     }
 
@@ -482,7 +617,6 @@ async function pesquisar() {
 
     if (normalizar(texto).includes(palavra)) {
       const botao = document.createElement("div");
-
       botao.className = "resultado";
       botao.textContent = "Encontrado na página " + numero;
 
@@ -497,10 +631,9 @@ async function pesquisar() {
     }
   }
 
-  document.getElementById("status").textContent =
-    quantidade
-      ? quantidade + " resultado(s) encontrado(s)."
-      : "Nenhum resultado encontrado.";
+  status.textContent = quantidade
+    ? quantidade + " resultado(s) encontrado(s)."
+    : "Nenhum resultado encontrado.";
 }
 
 function paginaAnterior() {
@@ -515,28 +648,26 @@ function proximaPagina() {
   }
 }
 
-let inicioToqueX = 0;
-let fimToqueX = 0;
+window.addEventListener("resize", function() {
+  if (!pdf) return;
 
-const area = document.getElementById("areaLeitura");
+  Object.keys(paginasRenderizadas).forEach(function(numero) {
+    const bloco = paginasElementos[numero];
 
-area.addEventListener("touchstart", function(event) {
-  inicioToqueX = event.changedTouches[0].screenX;
-}, {passive: true});
+    if (bloco) {
+      delete paginasRenderizadas[numero];
+      bloco.innerHTML = "";
 
-area.addEventListener("touchend", function(event) {
-  fimToqueX = event.changedTouches[0].screenX;
-
-  const diferenca = fimToqueX - inicioToqueX;
-
-  if (Math.abs(diferenca) > 55) {
-    if (diferenca < 0) {
-      proximaPagina();
-    } else {
-      paginaAnterior();
+      const aviso = document.createElement("div");
+      aviso.className = "carregandoPagina";
+      aviso.textContent = "Página " + numero;
+      bloco.appendChild(aviso);
     }
-  }
-}, {passive: true});
+  });
+
+  paginasRenderizando = {};
+  renderizarPagina(paginaAtual);
+});
 
 async function compartilhar() {
   const link = window.location.href;
